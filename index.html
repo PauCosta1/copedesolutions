@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta property="og:title" content="CoPeDe Solutions" />
+  <meta property="og:description" content="Web Projecte Intermodular" />
+  <meta property="og:image" content="https://i.postimg.cc/gJfmnkmL/Diseno-sin-titulo.png" />
+  <meta property="og:url" content="https://copede.ct.ws" />
+  <meta property="og:type" content="website" />
+  <title>Copede Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png"  sizes="128x128" href="image-removebg-preview.png" hei>
+  <style>
+    :root {
+      --neon: #00d4ff;
+      --neon-dim: #0099bb;
+      --neon-glow: rgba(0, 212, 255, 0.35);
+      --bg-deep: #030712;
+      --bg-card: #0d1117;
+      --bg-card2: #0a0f1a;
+      --grid-line: rgba(0, 212, 255, 0.06);
+      --text-muted: #6b7fa3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background-color: var(--bg-deep);
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid de fons ── */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .bg-glow-1 {
+      position: fixed;
+      top: -200px;
+      left: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      animation: drift1 18s ease-in-out infinite alternate;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,100,255,0.07) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      animation: drift2 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0,0); }
+      to   { transform: translate(80px, 60px); }
+    }
+    @keyframes drift2 {
+      from { transform: translate(0,0); }
+      to   { transform: translate(-60px, -40px); }
+    }
+
+    /* ── Tipografia ── */
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Neon text ── */
+    .neon-text {
+      color: var(--neon);
+      text-shadow: 0 0 20px var(--neon-glow), 0 0 40px rgba(0,212,255,0.15);
+    }
+
+    .neon-text-sm {
+      color: var(--neon);
+      text-shadow: 0 0 10px var(--neon-glow);
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(3, 7, 18, 0.75);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .logo-mark img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      border-radius: 10px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .logo-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: white;
+    }
+
+    .logo-name span { color: var(--neon); }
+
+    nav { display: flex; gap: 2rem; align-items: center; }
+
+    nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--neon);
+      transform: scaleX(0);
+      transition: transform 0.25s;
+    }
+
+    nav a:hover { color: var(--neon); }
+    nav a:hover::after { transform: scaleX(1); }
+
+    /* ── CTA Button ── */
+    .btn-neon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.75rem 2rem;
+      background: transparent;
+      border: 1px solid var(--neon);
+      border-radius: 6px;
+      color: var(--neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 16px rgba(0,212,255,0.2);
+    }
+
+    /* ── Estils del formulari ── */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 212, 255, 0.03);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  transition: all 0.3s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #4b6080;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Responsive per al formulari */
+@media (max-width: 768px) {
+  .form-group input,
+  .form-group textarea {
+    padding: 0.85rem;
+    font-size: 0.8rem;
+  }
+}
+    .btn-neon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--neon);
+      transform: translateX(-105%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      z-index: 0;
+    }
+
+    .btn-neon:hover::before { transform: translateX(0); }
+    .btn-neon:hover {
+      color: var(--bg-deep);
+      box-shadow: 0 0 30px rgba(0,212,255,0.5);
+    }
+
+    .btn-neon span, .btn-neon svg { position: relative; z-index: 1; }
+
+    .btn-neon-solid {
+      background: var(--neon);
+      color: var(--bg-deep);
+      font-weight: 700;
+      box-shadow: 0 0 30px rgba(0,212,255,0.4);
+    }
+
+    .btn-neon-solid::before { background: white; }
+    .btn-neon-solid:hover { color: var(--bg-deep); box-shadow: 0 0 50px rgba(0,212,255,0.7); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 2rem 80px;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+      background: rgba(0,212,255,0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 8px var(--neon);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .line-accent {
+      display: block;
+      color: var(--neon);
+      text-shadow: 0 0 30px var(--neon-glow), 0 0 60px rgba(0,212,255,0.1);
+    }
+
+    .hero-desc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,212,255,0.1);
+    }
+
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+    }
+    .stat-num span { color: var(--neon); }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* ── Terminal visual ── */
+    .hero-visual {
+      position: relative;
+    }
+
+    .terminal {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,212,255,0.08), 0 40px 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .terminal::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 12px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.4), transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .terminal-bar {
+      padding: 12px 16px;
+      background: rgba(0,212,255,0.05);
+      border-bottom: 1px solid rgba(0,212,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    .t-line { display: flex; gap: 8px; }
+    .t-prompt { color: var(--neon); user-select: none; }
+    .t-cmd { color: #a8d8ea; }
+    .t-out { color: var(--text-muted); padding-left: 1rem; }
+    .t-success { color: #4ade80; padding-left: 1rem; }
+    .t-dim { color: #374151; }
+
+    .t-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--neon);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      box-shadow: 0 0 6px var(--neon);
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* Progress bars */
+    .t-progress { margin: 4px 0 4px 1rem; }
+    .t-bar-bg {
+      height: 3px;
+      background: rgba(0,212,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .t-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-dim), var(--neon));
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--neon-glow);
+      animation: load-bar 2.5s ease-out forwards;
+      transform-origin: left;
+    }
+
+    @keyframes load-bar {
+      from { width: 0%; }
+    }
+
+    /* ── Secció serveis ── */
+    .section-services {
+      position: relative;
+      z-index: 1;
+      padding: 100px 2rem;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--neon);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--neon);
+      box-shadow: 0 0 6px var(--neon);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 4rem;
+    }
+
+    /* ── Grid de serveis ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--bg-card2);
+      border: 1px solid rgba(0,212,255,0.08);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    .service-card:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,212,255,0.1), 0 0 0 1px rgba(0,212,255,0.1);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+    .service-card:hover::after { opacity: 1; }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      background: rgba(0,212,255,0.05);
+      box-shadow: 0 0 20px rgba(0,212,255,0.08);
+      transition: box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-card:hover .service-icon {
+      box-shadow: 0 0 30px rgba(0,212,255,0.25);
+      border-color: rgba(0,212,255,0.5);
+    }
+
+    .service-num {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(0,212,255,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-desc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 100px;
+      color: rgba(0,212,255,0.6);
+      background: rgba(0,212,255,0.04);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Secció Nosaltres ── */
+    .section-about {
+      position: relative;
+      z-index: 1;
+      padding: 100px 2rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.02) 50%, transparent 100%);
+    }
+
+    .about-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-bottom: 5rem;
+    }
+
+    .about-text-block {}
+
+    .about-lead {
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      font-weight: 600;
+      line-height: 1.7;
+      color: #c9d8f0;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-body {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .about-values {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .about-value-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #8fa8c8;
+    }
+
+    .about-value-item::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--neon);
+      box-shadow: 0 0 6px var(--neon);
+      flex-shrink: 0;
+    }
+
+    /* Panel info empresa */
+    .about-panel {
+      background: var(--bg-card2);
+      border: 1px solid rgba(0,212,255,0.12);
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    }
+
+    .about-panel-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--neon);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    .about-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0,212,255,0.06);
+    }
+
+    .about-stat-row:last-child { border-bottom: none; }
+
+    .about-stat-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .about-stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: white;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .about-stat-val.neon { color: var(--neon); }
+
+    /* Cards dels tècnics */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: var(--bg-card2);
+      border: 1px solid rgba(0,212,255,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .team-card::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    .team-card:hover {
+      border-color: rgba(0,212,255,0.28);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 60px rgba(0,212,255,0.1);
+    }
+
+    .team-card:hover::after { opacity: 1; }
+
+    .team-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,212,255,0.3);
+      background: rgba(0,212,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 20px rgba(0,212,255,0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-avatar-initials {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--neon);
+      letter-spacing: 0.05em;
+    }
+
+    .team-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-bio {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.73rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Secció CTA final ── */
+    .section-cta {
+      position: relative;
+      z-index: 1;
+      padding: 100px 2rem;
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--bg-card2);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 20px;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(0,212,255,0.08);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--neon); }
+
+    /* ── Animacions d'entrada ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.35s; }
+    .delay-4 { animation-delay: 0.5s; }
+    .delay-5 { animation-delay: 0.65s; }
+
+    /* ── Hamburger menu ── */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 6px;
+      color: var(--neon);
+      cursor: pointer;
+      padding: 6px 10px;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--neon);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: rgba(3, 7, 18, 0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,212,255,0.1);
+      padding: 1.5rem 2rem;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0,212,255,0.06);
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover { color: var(--neon); }
+    .mobile-nav a::after { content: '→'; opacity: 0.3; font-size: 0.75rem; }
+
+    /* ── Tablet (≤1024px) ── */
+    @media (max-width: 1024px) {
+      .header-inner { padding: 0 1.5rem; }
+      .hero { padding: 110px 1.5rem 70px; }
+      .section-services { padding: 80px 1.5rem; }
+      .section-about { padding: 80px 1.5rem; }
+      .section-cta { padding: 80px 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── Tablet petit / landscape mòbil (≤768px) ── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .btn-neon.header-cta { display: none; }
+      .menu-toggle { display: flex; }
+      .header-inner { padding: 0 1.25rem; height: 60px; }
+
+      .hero { padding: 90px 1.25rem 60px; min-height: auto; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual { display: none; }
+      .hero-title { font-size: clamp(2.2rem, 7vw, 3.2rem); }
+      .hero-desc { font-size: 0.85rem; max-width: 100%; }
+      .hero-actions { flex-direction: column; gap: 0.75rem; }
+      .hero-actions a { width: 100%; justify-content: center; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .stat-num { font-size: 1.5rem; }
+
+      .section-services { padding: 60px 1.25rem; }
+      .section-title { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+      .section-sub { font-size: 0.8rem; margin-bottom: 2.5rem; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .service-card { padding: 1.5rem; }
+      .service-title { font-size: 1rem; }
+      .service-desc { font-size: 0.72rem; }
+
+      .section-about { padding: 60px 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .team-grid { grid-template-columns: 1fr; gap: 1rem; }
+
+      .section-cta { padding: 60px 1.25rem; }
+      .cta-box { padding: 2.5rem 1.5rem; }
+      .cta-title { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+      .cta-sub { font-size: 0.78rem; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .cta-actions a { width: 100%; max-width: 320px; justify-content: center; }
+
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem 1.25rem; }
+    }
+
+    /* ── Mòbil (≤480px) ── */
+    @media (max-width: 480px) {
+      .logo-name { font-size: 1rem; }
+      .logo-mark { width: 40px; height: 40px; }
+      .logo-mark img { width: 40px; height: 40px; }
+
+      .hero { padding: 80px 1rem 50px; }
+      .hero-title { font-size: clamp(2rem, 8vw, 2.6rem); line-height: 1.1; }
+      .hero-desc { font-size: 0.8rem; line-height: 1.7; }
+      .hero-stats { gap: 1.2rem; }
+      .stat-num { font-size: 1.3rem; }
+      .stat-label { font-size: 0.6rem; }
+
+      .section-services { padding: 50px 1rem; }
+      .services-grid { grid-template-columns: 1fr; gap: 0.9rem; }
+      .service-card { padding: 1.4rem; }
+      .service-icon { width: 40px; height: 40px; margin-bottom: 1.2rem; }
+      .service-num { font-size: 0.6rem; top: 1.2rem; right: 1.2rem; }
+      .service-title { font-size: 0.95rem; }
+      .service-desc { font-size: 0.73rem; margin-bottom: 1.2rem; }
+      .tag { font-size: 0.6rem; padding: 2px 8px; }
+      .section-tag { font-size: 0.65rem; }
+      .section-title { font-size: clamp(1.6rem, 7vw, 2rem); }
+
+      .section-about { padding: 50px 1rem; }
+      .about-panel { padding: 1.75rem 1.25rem; }
+      .team-grid { grid-template-columns: 1fr; }
+      .team-card { padding: 1.5rem 1.25rem; }
+
+      .section-cta { padding: 50px 1rem; }
+      .cta-box { padding: 2rem 1.2rem; border-radius: 14px; }
+      .cta-title { font-size: clamp(1.4rem, 6vw, 1.8rem); }
+      .cta-sub { font-size: 0.75rem; }
+      .btn-neon { padding: 0.7rem 1.4rem; font-size: 0.78rem; }
+
+      footer { padding: 1.5rem 1rem; }
+      .footer-copy { font-size: 0.65rem; }
+      .footer-links { gap: 1rem; }
+      .footer-links a { font-size: 0.65rem; }
+    }
+
+    /* ── Mòbil molt petit (≤360px) ── */
+    @media (max-width: 360px) {
+      .hero-title { font-size: 1.85rem; }
+      .logo-name { font-size: 0.9rem; letter-spacing: 0.02em; }
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 1rem; }
+    }
+
+    /* ── Responsive general ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      nav { display: none; }
+      .hero-stats { gap: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fons decoratiu -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- ══════════════════════════════════
+       HEADER
+  ══════════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <div class="logo-mark">
+          <img src="image-removebg-preview.png">
+        </div>
+        <span class="logo-name">CoPeDe<span>Solutions</span></span>
+      </a>
+
+      <nav>
+        <a href="https://copede.ct.ws/index.html">Inici</a>
+        <a href="https://copede.ct.ws/index.html#serveis">Serveis</a>
+        <a href="https://copede.ct.ws/index.html#nosaltres">Nosaltres</a>
+        <a href="https://copede.ct.ws/botiga.html">Botiga</a>
+        <a href="https://copede.ct.ws/index.html#contacte">Contacte</a>
+      </nav>
+
+      <a href="#contacte" class="btn-neon header-cta" style="padding: 0.5rem 1.25rem; font-size: 0.75rem;">
+        <span>Parlem</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6H10M7 3L10 6L7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Obrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Menú mòbil -->
+  <div class="mobile-nav" id="mobileNav">
+        <a href="https://copede.ct.ws/index.html" onclick="closeMobileNav()">Inici</a>
+        <a href="https://copede.ct.ws/index.html#serveis" onclick="closeMobileNav()">Serveis</a>
+        <a href="https://copede.ct.ws/index.html#nosaltres" onclick="closeMobileNav()">Nosaltres</a>
+        <a href="https://copede.ct.ws/botiga.html" onclick="closeMobileNav()">Botiga</a>
+        <a href="https://copede.ct.ws/index.html#contacte" onclick="closeMobileNav()">Contacte</a>
+    <a href="#contacte" onclick="closeMobileNav()" style="color:var(--neon); margin-top:0.5rem;">Parlem →</a>
+  </div>
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <!-- Text hero -->
+      <div>
+        <h1 class="hero-title fade-up delay-1">
+          Tecnologia<br>
+          que impulsa<br>
+          <span class="line-accent">el teu negoci</span>
+        </h1>
+
+        <p class="hero-desc fade-up delay-2">
+           Solucions informàtiques a mida<br>
+           Infraestructura cloud i seguretat<br>
+           Suport tècnic 24/7 garantit
+        </p>
+
+        <div class="hero-actions fade-up delay-3">
+          <a href="#serveis" class="btn-neon btn-neon-solid">
+            <span>Descobreix els serveis</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <a href="#contacte" class="btn-neon">
+            <span>Contacta'ns</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Terminal visual -->
+      <div class="hero-visual fade-up delay-3">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="t-dot" style="background:#ff5f57"></div>
+            <div class="t-dot" style="background:#febc2e"></div>
+            <div class="t-dot" style="background:#28c840"></div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:#4b6080; margin-left:8px;">copede</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">copede init --producció</span></div>
+            <div class="t-out">Iniciant entorn de producció...</div>
+            <div class="t-line" style="margin-top:8px;"><span class="t-prompt">❯</span><span class="t-cmd">deploy --stack cloud --region eu-west</span></div>
+            <div class="t-out">Verificant configuració...</div>
+            <div class="t-progress"><div class="t-bar-bg"><div class="t-bar-fill" style="width:100%"></div></div></div>
+            <div class="t-success">✓ Entorn desplegat correctament</div>
+            <div class="t-line" style="margin-top:8px;"><span class="t-prompt">❯</span><span class="t-cmd">security scan --deep</span></div>
+            <div class="t-out">Analitzant vulnerabilitats...</div>
+            <div class="t-progress"><div class="t-bar-bg"><div class="t-bar-fill" style="width:87%"></div></div></div>
+            <div class="t-success">✓ 0 vulnerabilitats detectades</div>
+            <div class="t-line" style="margin-top:8px;"><span class="t-prompt">❯</span><span class="t-cmd">monitor --live</span></div>
+            <div class="t-out">CPU: <span style="color:#00d4ff">12%</span> · RAM: <span style="color:#00d4ff">34%</span> · Latència: <span style="color:#4ade80">2ms</span></div>
+            <div class="t-line" style="margin-top:8px;"><span class="t-prompt">❯</span><span class="t-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SERVEIS — grid 3 columnes
+  ══════════════════════════════════ -->
+  <section class="section-services" id="serveis">
+    <div class="section-inner">
+
+      <div class="section-tag">Serveis tècnics</div>
+      <h2 class="section-title">
+        Tot el que necessita<br>
+        <span class="neon-text">la teva empresa</span>
+      </h2>
+      <p class="section-sub">
+        Des del suport diari fins a la seguretat i la presència digital. Nou serveis
+        integrals adaptats a cada necessitat empresarial.
+      </p>
+
+      <div class="services-grid">
+
+        <!-- S1 -->
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="2" y="4" width="18" height="12" rx="2" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M8 20H14" stroke="#00d4ff" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M11 16V20" stroke="#00d4ff" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M6 10L9 13L16 6" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Servei HelpDesk</h3>
+          <p class="service-desc">
+            Ajuda als usuaris i manteniment tècnic segons el tipus d'incidència.
+            Accés remot configurat amb software de ticketing per a una gestió àgil.
+          </p>
+          <div class="service-tags">
+            <span class="tag">Accés remot</span>
+            <span class="tag">Ticketing</span>
+            <span class="tag">Suport tècnic</span>
+          </div>
+        </div>
+
+        <!-- S2 -->
+        <div class="service-card fade-up delay-1">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="2" y="3" width="18" height="13" rx="2" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M6 8H16" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M6 11H12" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M7 19H15M11 16V19" stroke="#00d4ff" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Pàgina Web Empresarial</h3>
+          <p class="service-desc">
+            Pàgina web senzilla amb la informació bàsica de l'empresa.
+            Allotjament web, FTP i gestió de continguts inclosos.
+          </p>
+          <div class="service-tags">
+            <span class="tag">Allotjament web</span>
+            <span class="tag">FTP</span>
+            <span class="tag">CMS</span>
+          </div>
+        </div>
+
+        <!-- S3 -->
+        <div class="service-card fade-up delay-2">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 6H19L17 16H5L3 6Z" stroke="#00d4ff" stroke-width="1.4" stroke-linejoin="round"/>
+              <circle cx="8" cy="19" r="1.5" stroke="#00d4ff" stroke-width="1.2"/>
+              <circle cx="15" cy="19" r="1.5" stroke="#00d4ff" stroke-width="1.2"/>
+              <path d="M3 6L2 3H1" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Botiga Online</h3>
+          <p class="service-desc">
+            Botiga en línia completa per vendre els teus productes. Gestió de
+            categories, productes, imatges i usuaris administradors.
+          </p>
+          <div class="service-tags">
+            <span class="tag">eCommerce</span>
+            <span class="tag">Allotjament</span>
+            <span class="tag">FTP</span>
+          </div>
+        </div>
+
+        <!-- S4 -->
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 2L20 7V15L11 20L2 15V7L11 2Z" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M8 11L10 13L14 9" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Tallafocs i Antivirus</h3>
+          <p class="service-desc">
+            Protecció dels equips davant atacs externs amb zona desmilitaritzada (DMZ).
+            Inclou pla de contingència, Iptables i antivirus corporatiu.
+          </p>
+          <div class="service-tags">
+            <span class="tag">Iptables</span>
+            <span class="tag">DMZ</span>
+            <span class="tag">Antivirus</span>
+            <span class="tag">Pla contingència</span>
+          </div>
+        </div>
+
+        <!-- S5 -->
+        <div class="service-card fade-up delay-1">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <ellipse cx="11" cy="8" rx="8" ry="4" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M3 8V14C3 16.2 6.6 18 11 18C15.4 18 19 16.2 19 14V8" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M3 11C3 13.2 6.6 15 11 15C15.4 15 19 13.2 19 11" stroke="#00d4ff" stroke-width="1.2" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Còpies de Seguretat</h3>
+          <p class="service-desc">
+            Protecció de les dades en ubicacions externes. Backup automatitzat
+            amb SSH i RAID, i pla de contingència per a la recuperació.
+          </p>
+          <div class="service-tags">
+            <span class="tag">SSH</span>
+            <span class="tag">RAID</span>
+            <span class="tag">Backup</span>
+            <span class="tag">Pla contingència</span>
+          </div>
+        </div>
+
+        <!-- S6 -->
+        <div class="service-card fade-up delay-2">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="4" width="16" height="14" rx="2" stroke="#00d4ff" stroke-width="1.4"/>
+              <path d="M7 9H15M7 13H11" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M15 11L17 13L15 15" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Legislació</h3>
+          <p class="service-desc">
+            Compliment de la legislació vigent sobre protecció de dades i
+            propietat intel·lectual: LOPDGDD, LSSICE i LPI.
+          </p>
+          <div class="service-tags">
+            <span class="tag">LOPDGDD</span>
+            <span class="tag">LSSICE</span>
+            <span class="tag">LPI</span>
+            <span class="tag">Privacitat</span>
+          </div>
+        </div>
+
+        <!-- S7 -->
+        <div class="service-card fade-up">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="7" r="3" stroke="#00d4ff" stroke-width="1.4"/>
+              <circle cx="5" cy="16" r="2" stroke="#00d4ff" stroke-width="1.2"/>
+              <circle cx="17" cy="16" r="2" stroke="#00d4ff" stroke-width="1.2"/>
+              <path d="M11 10V13M11 13L5 15M11 13L17 15" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Active Directory</h3>
+          <p class="service-desc">
+            Gestió centralitzada dels usuaris de l'oficina: permisos, contrasenyes
+            i polítiques de grup. Configuració de clients Windows 10.
+          </p>
+          <div class="service-tags">
+            <span class="tag">Active Directory</span>
+            <span class="tag">Windows Server</span>
+            <span class="tag">GPO</span>
+          </div>
+        </div>
+
+        <!-- S8 -->
+        <div class="service-card fade-up delay-1">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="2" y="6" width="18" height="10" rx="2" stroke="#00d4ff" stroke-width="1.4"/>
+              <circle cx="6" cy="11" r="1.5" fill="#00d4ff" opacity="0.6"/>
+              <path d="M10 9H18M10 13H15" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M6 3V6M16 3V6" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Compartició de Recursos</h3>
+          <p class="service-desc">
+            Administració d'impressores i carpetes compartides al servidor.
+            Control d'accés per departament amb NFS/SAMBA.
+          </p>
+          <div class="service-tags">
+            <span class="tag">SAMBA</span>
+            <span class="tag">NFS</span>
+            <span class="tag">Impressores</span>
+            <span class="tag">Windows Server</span>
+          </div>
+        </div>
+
+        <!-- S9 -->
+        <div class="service-card fade-up delay-2">
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M4 18L8 10L11 14L14 8L18 18H4Z" stroke="#00d4ff" stroke-width="1.4" stroke-linejoin="round" fill="none"/>
+              <circle cx="11" cy="5" r="2" stroke="#00d4ff" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Disseny i Impressió 3D</h3>
+          <p class="service-desc">
+            Disseny i impressió d'una peça 3D de marxandatge per a la teva empresa.
+            Mida màxima 10×10×5 cm. Colors disponibles: verd i blanc.
+          </p>
+          <div class="service-tags">
+            <span class="tag">Disseny 3D</span>
+            <span class="tag">Impressió 3D</span>
+            <span class="tag">Marxandatge</span>
+            </div>
+          </div>
+      
+      <!-- Botó centrat fora del grid -->
+      <div style="display: flex; justify-content: center; margin-top: 3rem;">
+        <a href="https://copede.ct.ws/botiga.html" class="btn-neon btn-neon-solid" style="display: inline-flex; width: auto; min-width: auto; padding: 0.75rem 2rem;">
+          <span>Visita la Botiga</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       NOSALTRES
+  ══════════════════════════════════ -->
+  <section class="section-about" id="nosaltres">
+    <div class="about-inner">
+
+      <div class="section-tag">Qui som</div>
+      <h2 class="section-title">
+        L'equip darrere de<br>
+        <span class="neon-text">CoPeDe Solutions</span>
+      </h2>
+
+      <div class="about-grid">
+
+        <!-- Bloc de text -->
+        <div class="about-text-block fade-up">
+          <p class="about-lead">
+            Som una empresa especialitzada en serveis informàtics integrals, fundada per tres tècnics informàtics amb una visió clara: oferir tecnologia de qualitat professional a qualsevol mida d'empresa.
+          </p>
+          <p class="about-body">
+            A CoPeDe Solutions entenem que cada empresa és diferent. Per això, no apliquem solucions genèriques: escoltem, analitzem i dissenyem la infraestructura tecnològica que el teu negoci realment necessita.<br><br>
+            Combinem experiència tècnica en sistemes, xarxes i seguretat amb un tracte proper i una resposta ràpida. Tant si necessites suport puntual com un acompanyament tecnològic a llarg termini, estem aquí.
+          </p>
+          <div class="about-values">
+            <div class="about-value-item">Solucions a mida per a cada client</div>
+            <div class="about-value-item">Compromís amb la seguretat i la privacitat</div>
+            <div class="about-value-item">Suport tècnic àgil i proper</div>
+            <div class="about-value-item">Transparència i comunicació constant</div>
+            <div class="about-value-item">Tecnologia accessible per a totes les empreses</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equip -->
+      <div class="section-tag" style="margin-bottom: 2rem;">L'equip</div>
+      <div class="team-grid">
+
+        <!-- Tècnic 1 -->
+        <div class="team-card fade-up">
+          <div class="team-name">Pau Costa</div>
+          <div class="team-role">Infraestructura &amp; Sistemes</div>
+          <p class="team-bio">
+            Especialista en arquitectura de servidors, virtualització i gestió de xarxes corporatives. Responsable del disseny i desplegament d'entorns cloud segurs.
+          </p>
+          <div class="team-skills">
+            <span class="tag">Linux</span>
+            <span class="tag">VMware</span>
+            <span class="tag">Cloud</span>
+            <span class="tag">Xarxes</span>
+          </div>
+        </div>
+
+        <!-- Tècnic 2 -->
+        <div class="team-card fade-up delay-1">
+          <div class="team-name">Denis Del Rio</div>
+          <div class="team-role">Seguretat &amp; HelpDesk</div>
+          <p class="team-bio">
+            Expert en ciberseguretat, tallafocs i protecció de dades. Gestiona el servei de suport tècnic i s'assegura que les incidències es resolguin de manera àgil i eficaç.
+          </p>
+          <div class="team-skills">
+            <span class="tag">Seguretat</span>
+            <span class="tag">Iptables</span>
+            <span class="tag">Antivirus</span>
+            <span class="tag">Ticketing</span>
+          </div>
+        </div>
+
+        <!-- Tècnic 3 -->
+        <div class="team-card fade-up delay-2">
+          <div class="team-name">Roger Pedrol</div>
+          <div class="team-role">Desenvolupament &amp; Web</div>
+          <p class="team-bio">
+            Especialista en desenvolupament web, botigues en línia i impressió 3D. S'encarrega de la presència digital dels clients i del disseny de solucions a mida.
+          </p>
+          <div class="team-skills">
+            <span class="tag">Web</span>
+            <span class="tag">eCommerce</span>
+            <span class="tag">Impressió 3D</span>
+            <span class="tag">CMS</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CTA FINAL
+  ══════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     CTA FINAL AMB FORMULARI
+══════════════════════════════════ -->
+<section class="section-cta" id="contacte">
+  <div class="cta-box fade-up">
+    <div class="cta-glow"></div>
+    <div class="section-tag" style="justify-content:center; margin-bottom:1.5rem;">Comença ara</div>
+    <h2 class="cta-title">
+      Preparat per fer el<br>
+      <span class="neon-text">salt tecnològic?</span>
+    </h2>
+    <p class="cta-sub">
+      Explica'ns el teu projecte i t'oferirem una diagnosi gratuïta
+      de la teva infraestructura sense cap compromís.
+    </p>
+
+    <!-- FORMULARI DE CONTACTE -->
+    <form action="https://formsubmit.co/copede65@gmail.com" method="POST" class="contact-form">
+      <!-- Camps ocults per millorar el correu -->
+      <input type="hidden" name="_subject" value="Nou missatge des de CoPeDe Solutions">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_replyto" value="%email%">
+      <input type="hidden" name="_next" value="https://copede.ct.ws/gracies.html">
+ 
+
+      <div class="form-group">
+        <input type="text" name="Nom" placeholder="El teu nom" required>
+      </div>
+
+      <div class="form-group">
+        <input type="email" name="Correu electrònic" placeholder="El teu correu electrònic" required>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="Assumpte" placeholder="Assumpte" required>
+      </div>
+
+      <div class="form-group">
+        <textarea name="Missatge" rows="5" placeholder="Explica'ns el teu projecte..." required></textarea>
+      </div>
+
+      <div class="cta-actions">
+        <button type="submit" class="btn-neon btn-neon-solid">
+          <span>Enviar missatge</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7H11M8 4L11 7L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <p class="cta-sub" style="margin-top: 1.5rem;">
+      o escriu-nos directament a <strong style="color:#00d4ff;">copede65@gmail.com</strong>
+    </p>
+  </div>
+</section>
+
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer>
+    <div class="footer-copy">
+      © 2026 CoPeDe Solutions — Tots els drets reservats
+    </div>
+    <div class="footer-links">
+      <a href="#">Avís legal</a>
+      <a href="#">Privacitat</a>
+      <a href="#">Cookies</a>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    function closeMobileNav() {
+      menuToggle.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!menuToggle.contains(e.target) && !mobileNav.contains(e.target)) {
+        closeMobileNav();
+      }
+    });
+  </script>
+</body>
+</html>

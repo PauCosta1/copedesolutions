@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Botiga - CoPeDe Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="128x128" href="image-removebg-preview.png">
+  <style>
+    :root {
+      --neon: #00d4ff;
+      --neon-dim: #0099bb;
+      --neon-glow: rgba(0, 212, 255, 0.35);
+      --bg-deep: #030712;
+      --bg-card: #0d1117;
+      --bg-card2: #0a0f1a;
+      --grid-line: rgba(0, 212, 255, 0.06);
+      --text-muted: #6b7fa3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background-color: var(--bg-deep);
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* Fons decoratiu */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .bg-glow-1 {
+      position: fixed;
+      top: -200px;
+      left: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      animation: drift1 18s ease-in-out infinite alternate;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0,100,255,0.07) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      animation: drift2 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate(0,0); }
+      to { transform: translate(80px, 60px); }
+    }
+    @keyframes drift2 {
+      from { transform: translate(0,0); }
+      to { transform: translate(-60px, -40px); }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(3, 7, 18, 0.75);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+    }
+
+    .logo-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .logo-name span { color: var(--neon); }
+
+    /* Menú hamburguesa per mòbil */
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 8px;
+      color: var(--neon);
+      cursor: pointer;
+      padding: 8px 10px;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--neon);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.open span:nth-child(2) { opacity: 0; }
+    .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(3, 7, 18, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      padding: 1rem;
+      flex-direction: column;
+      z-index: 99;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.05);
+      transition: color 0.2s;
+    }
+
+    .mobile-nav a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--neon);
+    }
+
+    nav { display: flex; gap: 2rem; align-items: center; }
+
+    nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--neon); }
+
+    /* Botó cistella */
+    .cart-btn {
+      position: relative;
+      background: transparent;
+      border: 1px solid var(--neon);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      color: var(--neon);
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .cart-btn:hover {
+      background: var(--neon);
+      color: var(--bg-deep);
+      box-shadow: 0 0 20px var(--neon-glow);
+    }
+
+    .cart-count {
+      background: var(--neon);
+      color: var(--bg-deep);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Hero botiga */
+    .shop-hero {
+      position: relative;
+      z-index: 1;
+      padding: 100px 2rem 60px;
+      text-align: center;
+    }
+
+    .shop-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .shop-hero .neon-text {
+      color: var(--neon);
+      text-shadow: 0 0 20px var(--neon-glow);
+    }
+
+    .shop-hero p {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+      padding: 0 1rem;
+    }
+
+    /* Productes grid */
+    .products-section {
+      position: relative;
+      z-index: 1;
+      padding: 40px 2rem 80px;
+    }
+
+    .products-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+    }
+
+    .product-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-desc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--neon);
+      margin-bottom: 1rem;
+    }
+
+    .product-price small {
+      font-size: 0.7rem;
+      font-weight: normal;
+      color: var(--text-muted);
+    }
+
+    .add-to-cart {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--neon);
+      border-radius: 8px;
+      padding: 0.6rem;
+      color: var(--neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .add-to-cart:hover {
+      background: var(--neon);
+      color: var(--bg-deep);
+    }
+
+    /* Sidebar cistella */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      justify-content: flex-end;
+    }
+
+    .cart-overlay.open {
+      display: flex;
+    }
+
+    .cart-sidebar {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg-card);
+      border-left: 1px solid rgba(0, 212, 255, 0.2);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .cart-header h3 {
+      font-size: 1.2rem;
+      color: var(--neon);
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.05);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .cart-item-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .cart-item-price {
+      font-size: 0.75rem;
+      color: var(--neon);
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-item-quantity button {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      color: var(--neon);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .cart-item-quantity span {
+      font-size: 0.85rem;
+      min-width: 25px;
+      text-align: center;
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: #ff5f57;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px 8px;
+    }
+
+    .cart-total {
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0, 212, 255, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-total-row span:last-child {
+      color: var(--neon);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--neon);
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem;
+      color: var(--bg-deep);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .checkout-btn:hover {
+      box-shadow: 0 0 30px var(--neon-glow);
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(0, 212, 255, 0.08);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover { color: var(--neon); }
+
+    /* ============================================ */
+    /* RESPONSIVE PER A MÒBIL */
+    /* ============================================ */
+
+    /* Tablet (màxim 900px) */
+    @media (max-width: 900px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .shop-hero {
+        padding: 90px 1.5rem 50px;
+      }
+    }
+
+    /* Mòbil gran (màxim 768px) */
+    @media (max-width: 768px) {
+      .header-inner {
+        padding: 0 1rem;
+      }
+      
+      nav {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: flex;
+      }
+      
+      .logo-name {
+        font-size: 1rem;
+      }
+      
+      .logo-mark {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .logo-mark img {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .cart-btn span {
+        display: none;
+      }
+      
+      .cart-btn {
+        padding: 0.5rem;
+      }
+      
+      .shop-hero {
+        padding: 80px 1rem 40px;
+      }
+      
+      .shop-hero h1 {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+      }
+      
+      .products-section {
+        padding: 20px 1rem 60px;
+      }
+      
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .product-card {
+        padding: 1.2rem;
+      }
+      
+      .product-title {
+        font-size: 1rem;
+      }
+      
+      .product-price {
+        font-size: 1.1rem;
+      }
+      
+      .cart-sidebar {
+        max-width: 100%;
+        width: 100%;
+      }
+      
+      footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      
+      .footer-links {
+        justify-content: center;
+      }
+    }
+
+    /* Mòbil petit (màxim 480px) */
+    @media (max-width: 480px) {
+      .shop-hero {
+        padding: 70px 0.8rem 30px;
+      }
+      
+      .shop-hero p {
+        font-size: 0.75rem;
+      }
+      
+      .products-section {
+        padding: 15px 0.8rem 50px;
+      }
+      
+      .product-card {
+        padding: 1rem;
+      }
+      
+      .product-icon {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .product-icon span {
+        font-size: 1.4rem !important;
+      }
+      
+      .product-title {
+        font-size: 0.9rem;
+      }
+      
+      .product-desc {
+        font-size: 0.65rem;
+      }
+      
+      .product-price {
+        font-size: 1rem;
+      }
+      
+      .add-to-cart {
+        padding: 0.5rem;
+        font-size: 0.65rem;
+      }
+      
+      .cart-header h3 {
+        font-size: 1rem;
+      }
+      
+      .cart-item-title {
+        font-size: 0.75rem;
+      }
+      
+      .cart-item-price {
+        font-size: 0.7rem;
+      }
+      
+      .cart-item-quantity button {
+        width: 24px;
+        height: 24px;
+      }
+      
+      .checkout-btn {
+        padding: 0.7rem;
+        font-size: 0.8rem;
+      }
+      
+      .footer-copy {
+        font-size: 0.6rem;
+      }
+      
+      .footer-links a {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* Mòbil extra petit (màxim 360px) */
+    @media (max-width: 360px) {
+      .logo-name {
+        font-size: 0.85rem;
+      }
+      
+      .shop-hero h1 {
+        font-size: 1.4rem;
+      }
+      
+      .product-title {
+        font-size: 0.85rem;
+      }
+      
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .cart-item-quantity {
+        align-self: flex-end;
+      }
+    }
+
+    .btn-neon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.6rem 1.5rem;
+      background: transparent;
+      border: 1px solid var(--neon);
+      border-radius: 6px;
+      color: var(--neon);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-neon:hover {
+      background: var(--neon);
+      color: var(--bg-deep);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">
+          <img src="image-removebg-preview.png" alt="Logo">
+        </div>
+        <span class="logo-name">CoPeDe<span>Solutions</span></span>
+      </a>
+
+      <nav>
+        <a href="https://copede.ct.ws/index.html">Inici</a>
+        <a href="https://copede.ct.ws/index.html#serveis">Serveis</a>
+        <a href="https://copede.ct.ws/index.html#nosaltres">Nosaltres</a>
+        <a href="https://copede.ct.ws/botiga.html">Botiga</a>
+        <a href="https://copede.ct.ws/index.html#contacte">Contacte</a>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <button class="cart-btn" id="openCartBtn">
+        🛒 <span>Cistella</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Menú mòbil -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="https://copede.ct.ws/index.html">Inici</a>
+    <a href="https://copede.ct.ws/index.html#serveis">Serveis</a>
+    <a href="https://copede.ct.ws/index.html#nosaltres">Nosaltres</a>
+    <a href="https://copede.ct.ws/botiga.html">Botiga</a>
+    <a href="https://copede.ct.ws/index.html#contacte">Contacte</a>
+  </div>
+
+  <section class="shop-hero">
+    <h1>La teva <span class="neon-text">botiga online</span></h1>
+    <p>Selecciona els serveis que necessites i afegeix-los a la cistella. Fes la teva comanda personalitzada!</p>
+  </section>
+
+  <section class="products-section">
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+  <footer>
+    <div class="footer-copy">© 2026 CoPeDe Solutions — Tots els drets reservats</div>
+    <div class="footer-links">
+      <a href="#">Avís legal</a>
+      <a href="#">Privacitat</a>
+      <a href="#">Cookies</a>
+    </div>
+  </footer>
+
+  <!-- Sidebar cistella -->
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-sidebar">
+      <div class="cart-header">
+        <h3>🛒 La teva cistella</h3>
+        <button class="close-cart" id="closeCartBtn">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="empty-cart">La cistella està buida</div>
+      </div>
+      <div class="cart-total" id="cartTotal" style="display: none;">
+        <div class="cart-total-row">
+          <span>Total:</span>
+          <span id="totalAmount">0€</span>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Finalitzar comanda →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Menú hamburguesa
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    function closeMobileNav() {
+      menuToggle.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!menuToggle.contains(e.target) && !mobileNav.contains(e.target)) {
+        closeMobileNav();
+      }
+    });
+
+    // PRODUCTES (Els 9 serveis)
+    const products = [
+      { id: 1, name: "Servei HelpDesk", desc: "Ajuda als usuaris i manteniment tècnic. Accés remot i gestió d'incidències.", price: 49, icon: "🖥️" },
+      { id: 2, name: "Pàgina Web Empresarial", desc: "Pàgina web senzilla amb informació bàsica, allotjament i FTP.", price: 299, icon: "🌐" },
+      { id: 3, name: "Botiga Online", desc: "Botiga en línia completa per vendre els teus productes.", price: 499, icon: "🛍️" },
+      { id: 4, name: "Tallafocs i Antivirus", desc: "Protecció dels equips, DMZ, Iptables i antivirus corporatiu.", price: 89, icon: "🛡️" },
+      { id: 5, name: "Còpies de Seguretat", desc: "Backup automatitzat amb SSH i RAID, pla de contingència.", price: 59, icon: "💾" },
+      { id: 6, name: "Legislació", desc: "Compliment LOPDGDD, LSSICE i LPI.", price: 149, icon: "⚖️" },
+      { id: 7, name: "Active Directory", desc: "Gestió centralitzada d'usuaris, permisos i polítiques.", price: 199, icon: "👥" },
+      { id: 8, name: "Compartició de Recursos", desc: "Administració d'impressores i carpetes compartides.", price: 79, icon: "📁" },
+      { id: 9, name: "Disseny i Impressió 3D", desc: "Disseny i impressió de marxandatge 3D.", price: 39, icon: "🖨️" }
+    ];
+
+    // Carregar cistella des de localStorage
+    let cart = JSON.parse(localStorage.getItem('copedeCart')) || [];
+
+    function saveCart() {
+      localStorage.setItem('copedeCart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartCount = document.getElementById('cartCount');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+
+      const cartItemsDiv = document.getElementById('cartItems');
+      const cartTotalDiv = document.getElementById('cartTotal');
+      const totalAmountSpan = document.getElementById('totalAmount');
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<div class="empty-cart">La cistella està buida</div>';
+        cartTotalDiv.style.display = 'none';
+        return;
+      }
+
+      cartTotalDiv.style.display = 'block';
+      let itemsHtml = '';
+      let total = 0;
+
+      cart.forEach(item => {
+        const product = products.find(p => p.id === item.id);
+        if (!product) return;
+        const itemTotal = product.price * item.quantity;
+        total += itemTotal;
+
+        itemsHtml += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${product.name}</div>
+              <div class="cart-item-price">${product.price}€ / unitat</div>
+            </div>
+            <div class="cart-item-quantity">
+              <button onclick="updateQuantity(${item.id}, -1)">-</button>
+              <span>${item.quantity}</span>
+              <button onclick="updateQuantity(${item.id}, 1)">+</button>
+              <button class="cart-item-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+            </div>
+          </div>
+        `;
+      });
+
+      cartItemsDiv.innerHTML = itemsHtml;
+      totalAmountSpan.textContent = total + '€';
+    }
+
+    function updateQuantity(productId, change) {
+      const index = cart.findIndex(item => item.id === productId);
+      if (index !== -1) {
+        const newQuantity = cart[index].quantity + change;
+        if (newQuantity <= 0) {
+          cart.splice(index, 1);
+        } else {
+          cart[index].quantity = newQuantity;
+        }
+        saveCart();
+      }
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      saveCart();
+    }
+
+    function addToCart(productId) {
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ id: productId, quantity: 1 });
+      }
+      saveCart();
+
+      // Animació feedback
+      const btn = event.target;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✓ Afegit!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 1000);
+    }
+
+    // Renderitzar productes
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = products.map(product => `
+        <div class="product-card">
+          <div class="product-icon">
+            <span style="font-size: 1.8rem;">${product.icon}</span>
+          </div>
+          <h3 class="product-title">${product.name}</h3>
+          <p class="product-desc">${product.desc}</p>
+          <div class="product-price">${product.price}€ <small>/ servei</small></div>
+          <button class="add-to-cart" onclick="addToCart(${product.id})">
+            🛒 Afegir a la cistella
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // Sidebar
+    const overlay = document.getElementById('cartOverlay');
+    const openBtn = document.getElementById('openCartBtn');
+    const closeBtn = document.getElementById('closeCartBtn');
+
+    openBtn.addEventListener('click', () => {
+      overlay.classList.add('open');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('open');
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('open');
+      }
+    });
+
+    // Checkout
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      if (cart.length === 0) {
+        alert('La cistella està buida. Afegeix algun servei abans de finalitzar.');
+        return;
+      }
+
+      // Crear missatge per enviar
+      let message = "🛒 **Comanda CoPeDe Solutions**\n\n";
+      let total = 0;
+      cart.forEach(item => {
+        const product = products.find(p => p.id === item.id);
+        const subtotal = product.price * item.quantity;
+        total += subtotal;
+        message += `• ${product.name} x${item.quantity} = ${subtotal}€\n`;
+      });
+      message += `\n📦 **Total: ${total}€**\n\n`;
+      message += `📧 Per confirmar la comanda, respon aquest missatge amb les teves dades de contacte.`;
+
+      // Enviar per correu
+      window.location.href = `mailto:copede65@gmail.com?subject=Comanda%20CoPeDe%20Solutions&body=${encodeURIComponent(message)}`;
+
+      overlay.classList.remove('open');
+    });
+
+    renderProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
